@@ -1,3 +1,4 @@
+import sys
 import numpy as np
 import matplotlib.pyplot as plt
 import librosa
@@ -12,7 +13,7 @@ def euclid_divergence(Y, Yh):
     return d
 
 
-def NMF(Y, R=3, n_iter=50, init_H=[], init_U=[], verbose=False):
+def NMF(Y, n_iter, init_H=[], init_U=[], verbose=False):
     """
     Y ≈　HU
     Y ∈ R (m, n)
@@ -41,29 +42,30 @@ def NMF(Y, R=3, n_iter=50, init_H=[], init_U=[], verbose=False):
     N = Y.shape[1]
 
     # 初期化
+    if len(init_H):
+        H = init_H
+        R = init_H.shape[1]
+    else:
+        print("ERROR!!: Please set the initial values of basis matrix")
+        sys.exit(1)
+
     if len(init_U):
         U = init_U
         R = init_U.shape[0]
     else:
         U = np.random.rand(R, N)
 
-    if len(init_H):
-        H = init_H
-        R = init_H.shape[1]
-    else:
-        H = np.random.rand(M, R)
-
     # コストを保持するための入れ物
     cost = np.zeros(n_iter)
 
     # 近似行列
-    Lambda = np.dot(H, U)
+    Y_hat = np.dot(H, U)
 
     # イテレーション開始
-    for i in range(n_iter):
+    for it in range(n_iter):
 
         # ユークリッド距離の計算
-        cost[i] = euclid_divergence(Y, Lambda)
+        cost[it] = euclid_divergence(Y, Y_hat)
 
         # Hのアップデート
         H *= np.dot(Y, U.T) / (np.dot(np.dot(H, U), U.T) + eps)
@@ -72,7 +74,11 @@ def NMF(Y, R=3, n_iter=50, init_H=[], init_U=[], verbose=False):
         U *= np.dot(H.T, Y) / (np.dot(np.dot(H.T, H), U) + eps)
 
         # 近似行列の計算
-        Lambda = np.dot(H, U)
+        Y_hat = np.dot(H, U)
+
+        #　現在の状況の表示
+        if (it/n_iter)*100 % 10 == 0:
+            print("現在" + str(int((it/n_iter)*100) + 10) + "％完了")
 
     return [H, U, cost]
 

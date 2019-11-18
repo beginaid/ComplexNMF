@@ -7,17 +7,24 @@ Main contents are devided into two types.
 1. NMF: just decomposing non negative spectrogram into basis and activation.
 2. CNMF: decomposing complex spectrogram with using phase values.
 
+In this sontext, the basis matrix is considered to be fixed. Therefore, please give them initial basis matrix. Note that the activation is initialized by gaussian distribution.
 
 # Usage
 ## NMF
-First, please prepare the spectrogram whose type is ndarray. Then, the fitst argument is the path to the ndarray spectrogram.
+First, please prepare the spectrogram whose type is ndarray. Also, prepare the initial values of basis matrix. Note that the number of frequency bins must be the same number between the spectrogram and the initial values.
 ```
-$ python NMF.py "path_to_spectrogram.npy"
+$ python NMF.py [path_to_spectrogram.npy] [path_to_initial_values] [iterations] 
 ```
+Arguments:  
+1. Path to the spectrogram file made by ndarray.
+2. The number of overall iterations.
+3. Path to the initial values of basis matrix
+
+
 Return:
-1. basis matrix
-2. activation matrix
-3. Errors based on the euclid_divergence
+1. basis matrix (ndarray)
+2. activation matrix (ndarray)
+3. Errors based on the euclid_divergence (ndarray)
 
 
 ## Complex NMF
