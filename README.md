@@ -27,7 +27,7 @@ Automatically saved ndarray as ".npy". In addition, automatically draw the learn
 2. activation matrix (activation_calc.npy)
 3. Errors based on the euclid_divergence (cost.npy)
 <div align="center">
-<img src="learning_curve_NMF.png" alt="" title="">
+<img src="learning_curve_NMF.png" alt="" title="", width="400">
 </div>
 
 ## Complex NMF
