@@ -77,7 +77,7 @@ def NMF(Y, R=3, n_iter=50, init_H=[], init_U=[], verbose=False):
     return [H, U, cost]
 
 
-def CNMF(Y, L, p, n_iter, a=None, init_H=[], init_U=[], init_P=[], init_B=[], verbose=False):
+def CNMF(Y, L=72, p=1.2, n_iter=10, a=None, init_H=[], init_U=[], init_P=[], init_B=[], verbose=False):
     """
     以下が複素NMFのモデル
     ----
@@ -227,7 +227,7 @@ def CNMF(Y, L, p, n_iter, a=None, init_H=[], init_U=[], init_P=[], init_B=[], ve
     return [a, error[n_iter - 1], F, H, U, P_exp, Y - F]
 
 
-def SCNMF(Y, L, p, n_iter, a=None, init_H=[], init_U=[], verbose=False):
+def SCNMF(Y, L=72, p=1.2, n_iter=10, th=0, a=None, init_H=[], init_U=[], verbose=False):
     """
     以下が複素NMFのモデル
     ----
@@ -303,13 +303,9 @@ def SCNMF(Y, L, p, n_iter, a=None, init_H=[], init_U=[], verbose=False):
 
     #　誤差を蓄える変数の生成
     error = np.zeros(n_iter)
-    N = np.arange(n_iter)
 
     #　更新を繰り返す
     for it in range(n_iter):
-
-        # 誤差の記録
-        error[it] = np.sum(np.abs(Y - F))
 
         #　B_norを更新
         B_num = np.einsum("kl,lm -> lkm", H, U)
@@ -341,13 +337,32 @@ def SCNMF(Y, L, p, n_iter, a=None, init_H=[], init_U=[], verbose=False):
         if (it/n_iter)*100 % 10 == 0:
             print("現在" + str(int((it/n_iter)*100) + 10) + "％完了")
 
-    plt.plot(N, error/(K*L*M))
+        nm_iter = it
+
+        # 誤差の記録
+        error[it] = np.sum(np.abs(Y - F))/(K*L*M)
+        if it > 20:
+            if error[it] < th:
+                print("閾値による強制終了")
+                break
+
+        if it > 0:
+            if error[it] > error[it - 1]:
+                max_error = error[it]
+            if (error[it] / max_error) < 0.05611:
+                print("誤差の割合による強制終了")
+                break
+
+    print("繰り返し回数："+str(nm_iter+1)+"回")
+    N = np.arange(1, nm_iter+2)
+    error = error[:nm_iter+1]
+    plt.plot(N, error)
     plt.show()
 
-    return[a, error[n_iter-1], F, H, U, P_exp, Y-F]
+    return[a, error[nm_iter], F, H, U, P_exp, nm_iter, Y-F]
 
 
-def initial_calues():
+def initial_values():
     nm_cr = 12*3
     nm_pf = 12*3
     L = nm_cr + nm_pf
