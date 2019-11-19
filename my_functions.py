@@ -183,7 +183,7 @@ def CNMF(Y, n_iter, th=0, p=1.2, a=None, init_H=[], init_U=[], verbose=False):
         U_den_den = np.einsum("kl,lkm -> lkm", H, X_abs)
         U_den = np.einsum("lkm,lkm -> lm", U_den_den, 1/B_nor)
         U_num_den = np.einsum("kl,kl -> kl", H, H)
-        U_num = np.einsum("lkm,lkm -> lm", U_den_den, 1/B_nor)
+        U_num = np.einsum("kl,lkm -> lm", U_num_den, 1/B_nor)
         U = U_den / (U_num + a*p*(np.abs(U))**(p-2))
 
         #　改めてFを生成
@@ -203,20 +203,13 @@ def CNMF(Y, n_iter, th=0, p=1.2, a=None, init_H=[], init_U=[], verbose=False):
                 print("閾値による強制終了")
                 break
 
-        if it > 0:
-            if error[it] > error[it - 1]:
-                max_error = error[it]
-            if (error[it] / max_error) < 0.05611:
-                print("誤差の割合による強制終了")
-                break
-
     print("繰り返し回数："+str(nm_iter+1)+"回")
     N = np.arange(1, nm_iter+2)
     error = error[:nm_iter+1]
     plt.plot(N, error)
     plt.show()
 
-    return[a, error[nm_iter], F, H, U, P_exp, nm_iter, Y-F]
+    return[error, F, H, U, P_exp, nm_iter, Y-F]
 
 
 def initial_values():

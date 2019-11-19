@@ -14,6 +14,11 @@ In this context, the basis matrix is considered to be fixed. Therefore, please g
 First, please prepare the spectrogram whose type is ndarray. Also, prepare the initial values of basis matrix, which is fixed through the overall irerations. Note that the number of frequency bins must be the same number between the spectrogram and the initial values.
 
 
+<div align="center">
+<img src="images/GMM.png" alt="" title="", width="400">
+</div>
+
+
 ```
 $ python NMF.py [path_to_spectrogram.npy] [iterations] [path_to_initial_values]
 ```
@@ -26,10 +31,10 @@ Arguments:
 
 
 Return:
-Automatically saved ndarray as ".npy". In addition, automatically draw the learning curve.
-1. basis matrix (basis_calc.npy)
-2. activation matrix (activation_calc.npy)
-3. Errors based on the euclid_divergence (cost.npy)
+- Basis matrix (basis_calc.npy)
+- Activation matrix (activation_calc.npy)
+- Errors based on the euclid_divergence (cost.npy)  
+※Automatically saved ndarray as ".npy". In addition, automatically draw the learning curve.
 <div align="center">
 <img src="images/learning_curve_NMF.png" alt="" title="", width="400">
 </div>
@@ -38,6 +43,31 @@ Automatically saved ndarray as ".npy". In addition, automatically draw the learn
 As the case of NMF, please prepare the spectrigram with ndarray. At the same time, make the initial values as fixed matrix. Then the activation matrix is initialized using the same way as NMF while phase matrix is initialized as follows. It is based on the original paper of complex NMF[1].
 <div align="center">
 <img src="images/init_phase.png" alt="" title="", width="200">
+</div>
+
+
+```
+$ python CNMF.py [path_to_spectrogram.npy] [iterations] [path_to_initial_values] -thr [threshold]
+```
+
+
+Arguments:  
+1. Path to the spectrogram file made by ndarray.
+2. The number of overall iterations.
+3. Path to the initial values of basis matrix
+4. Threshold of the error (optional)
+
+
+Return:
+- Basis matrix (basis_calc.npy)
+- Activation matrix (activation_calc.npy)
+- Exponential-phase matrix (phase_calc.npy)
+- Reconstructed spectrigram (reconst.npy)
+- Errors based on the euclid_divergence (cost.npy)  
+
+※Automatically saved ndarray as ".npy". In addition, automatically draw the learning curve.
+<div align="center">
+<img src="images/learning_curve_CNMF.png" alt="" title="", width="400">
 </div>
 
 # References
