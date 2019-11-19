@@ -42,7 +42,7 @@ Return:
 ## Complex NMF
 As the case of NMF, please prepare the spectrigram with ndarray. At the same time, make the initial values as fixed matrix. Then the activation matrix is initialized using the same way as NMF while phase matrix is initialized as follows. It is based on the original paper of complex NMF[1].
 <div align="center">
-<img src="images/init_phases.png" alt="" title="", width="400">
+<img src="images/init_phases.png" alt="" title="", width="300">
 </div>
 
 
