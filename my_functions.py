@@ -5,7 +5,9 @@ import librosa
 import librosa.display
 import matplotlib.pyplot as plt
 import scipy.io.wavfile as wav
+import glob
 from IPython.display import display, Audio
+from scipy import stats
 
 
 def euclid_divergence(Y, Yh):
@@ -13,7 +15,7 @@ def euclid_divergence(Y, Yh):
     return d
 
 
-def NMF(Y, n_iter, init_H=[], init_U=[], verbose=False):
+def NMF(Y, n_iter, R=None, init_H=[], init_U=[], verbose=False):
     """
     Y ≈　HU
     Y ∈ R (m, n)
@@ -75,10 +77,6 @@ def NMF(Y, n_iter, init_H=[], init_U=[], verbose=False):
 
         # 近似行列の計算
         Y_hat = np.dot(H, U)
-
-        #　現在の状況の表示
-        if (it/n_iter)*100 % 10 == 0:
-            print("現在" + str(int((it/n_iter)*100) + 10) + "％完了")
 
     return [H, U, cost]
 
@@ -212,97 +210,59 @@ def CNMF(Y, n_iter, th=0, p=1.2, a=None, init_H=[], init_U=[], verbose=False):
     return[error, F, H, U, P_exp, nm_iter, Y-F]
 
 
-def initial_values():
-    nm_cr = 12*3
-    nm_pf = 12*3
-    L = nm_cr + nm_pf
+def Makespectral(wavdata, i, fs, init_H):
+    K = 1025
+    S = librosa.stft(y=wavdata[i, :], n_fft=2048)
+    S_abs = np.abs(S)
+    init_H = init_H[:, i].reshape(K, 1)
+    nmf_data = NMF(Y=S_abs, R=1, n_iter=50, init_H=init_H,
+                   init_U=[], verbose=False)
+    return nmf_data
+
+
+def initial_values(path):
+    # パラメータ設定
+    file_names = path+"/**/*.wav"
+    wavlist_not_sorted = glob.glob(file_names, recursive=True)
+    wavlist = sorted(wavlist_not_sorted)
+    L = len(wavlist)
+    print("The number of basis vectors："+str(L))
     K = 1025
     fs = 44100
     xlim = 11250
     l = 50
     x = np.linspace(0, xlim, xlim)
-    f = np.linspace(0, l, l)
-    p_cr = np.zeros(xlim)
-    p_pf = np.zeros(xlim)
-    pi_cr = np.geomspace(1, 0.9**(l-1), l)
-    pi_pf = np.geomspace(1, 0.9**(l-1), l)
+    p = np.zeros(xlim)
+    pi = np.geomspace(1, 0.9**(l-1), l)
 
     for n in range(l):
-        p_cr += pi_cr[n]*stats.norm.pdf(x, scale=1, loc=261.63*(n+1))
-    p_cr = p_cr / np.sum(p_cr)
+        p += pi[n]*stats.norm.pdf(x, scale=1, loc=130.81*(n+1))
+    p = p / np.sum(p)
 
-    for m in range(l):
-        p_pf += pi_pf[m]*stats.norm.pdf(x, scale=1, loc=130.81*(m+1))
-    p_pf = p_pf / np.sum(p_pf)
+    init_H = np.random.choice(x, K*L, p=p).reshape(K, L)
 
-    init_H_cr = random.choice(x, K*nm_cr, p=p_cr).reshape(K, nm_cr)
-    init_H_pf = random.choice(x, K*nm_pf, p=p_pf).reshape(K, nm_pf)
-    init_H = np.concatenate((init_H_cr, init_H_pf), axis=1)
+    len_list = []
+    for i in range(len(wavlist)):
+        len_list.append(len(librosa.load(wavlist[i])[0]))
 
-    sound = AudioSegment.from_file("0_bs_div0-0.wav", "wav")
+    data_len = min(len_list)
 
-    # 情報の取得
-    time = sound.duration_seconds  # 再生時間(秒)
-    rate = sound.frame_rate  # サンプリングレート(Hz)
-    channel = sound.channels  # チャンネル数(1:mono, 2:stereo)
+    print("The number of frequency bins："+str(data_len))
+    wavdata = np.zeros((L, data_len))
 
-    # 情報の表示
-    print('チャンネル数：', channel)
-    print('サンプリングレート：', rate)
-    print('再生時間：', time)
+    for i in range(L):
+        wavdata[i, :] = librosa.load(wavlist[i])[0][:data_len]
 
-    data_len = len(librosa.load("cr" + str(0)+".wav")[0])
-    wavdata_cr = np.zeros((nm_cr, data_len))
-    wavdata_pf = np.zeros((nm_pf, data_len))
+    wavdata = np.array(wavdata)
+    spsignal = np.zeros((1025, L))
 
-    for i in range(nm_cr):
-        wavdata_cr[i, :] = librosa.load("cr" + str(i)+".wav")[0]
-
-    for j in range(nm_pf):
-        wavdata_pf[j, :] = librosa.load("pf" + str(j)+".wav")[0]
-
-    wavdata_cr = np.array(wavdata_cr)
-    wavdata_pf = np.array(wavdata_pf)
-
-    spsignal_cr = np.zeros((1025, nm_cr))
-    for m in range(nm_cr):
-        S_abs = Makespectral(wavdata=wavdata_cr, i=m, fs=fs, init_H=init_H)
-        spsignal_cr[:, m] = S_abs[0].reshape(1025)
-
-    spsignal_pf = np.zeros((1025, nm_pf))
-    for m in range(nm_pf):
-        S_abs = Makespectral(wavdata=wavdata_pf, i=m, fs=fs, init_H=init_H)
-        spsignal_pf[:, m] = S_abs[0].reshape(1025)
-    spsignal = np.concatenate((spsignal_cr, spsignal_pf), axis=1)
-
-    # load wav
-    y_crpf, sr_crpf = librosa.load(str(nm_musics)+'.wav')
-
-    plt.subplot(311)
-    plt.title('mixed')
-    plt.plot(y_crpf)
-
-    print('ソース音源: MIX音')
-    display(Audio(y_crpf, rate=sr_crpf))
-    print("サンプリング周波数：" + str(rate))
-
-    # STFT
-    S_crpf = librosa.stft(y=y_crpf, n_fft=2048)
-
-    # 学習で行う反復計算回数
-    n_iter = 100
-
-    nmf = NMF(Y=np.abs(S_crpf), R=L, n_iter=n_iter, init_H=spsignal)
-    init_U = nmf[1]
-    np.save(str(nm_musics)+"init_U", init_U)
-    K = S_crpf.shape[0]
-    L = nm_cr + nm_pf
-    M = S_crpf.shape[1]
-
-    # 縦軸を対数表示
-    fig = plt.figure(1, figsize=(8, 4))
-    ax = fig.add_subplot(1, 1, 1)
+    for m in range(L):
+        S_abs = Makespectral(wavdata=wavdata, i=m, fs=fs, init_H=init_H)
+        spsignal[:, m] = S_abs[0].reshape(1025)
 
     log_power = librosa.amplitude_to_db(spsignal, ref=np.max)
     librosa.display.specshow(log_power, y_axis="log")
-    plt.savefig('教師基底行列のスペクトログラム.svg', format="svg", bbox_inches='tight')
+
+    plt.savefig("fixed_basis_spectrogram.png",
+                format="png", bbox_inches='tight')
+    return log_power

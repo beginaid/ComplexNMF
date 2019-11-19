@@ -19,14 +19,55 @@ In this context, the basis matrix is considered to be fixed. Therefore, please g
 <br>
 
 # Usage
-## NMF
-First, please prepare the spectrogram whose type is ndarray. Also, prepare the initial values of basis matrix, which is fixed through the overall irerations. Note that the number of frequency bins must be the same number between the spectrogram and the initial values.
+## Making initialized basis spevtrogram
+In order to conduct source separation, basis supectrogram should be prepared. In this case, I made simple basis spectrogram from piano sound templates. These samplate is sampled from Musescore, one of the most popular notation software. In this repository named "basis_wav_piano" includes 5 octaves of single piano sound. Then using the code below, you can make fixed basis spectrograms which is made through NMF.
+
+```
+$ python python make_init_H.py [path_to_template_directory]
+```
+Arguments:  
+1. Path to the directory which includes template wav files.
+
+
+Return:
+- Basis matrix (fixed_basis.npy)
+
+<br>
+
+In this algorithm, I adopt the parameters based on the harmonic feature of piano as follows. 130.81 is the frequency of C3. Also, the damping coefficient is set as 0.9, variance as 1.0 and the number of peak as 50.
+
+<br>
+
+<div align="center">
+<img src="images/GMM_math.png" alt="" title="", width="400">
+</div>
 
 <br>
 
 <div align="center">
 <img src="images/GMM.png" alt="" title="", width="400">
 </div>
+
+<br>
+
+<div align="center">
+<img src="images/parameters.png" alt="" title="", width="280">
+</div>
+
+
+Those parameters determin the initial values of NMF to make basis spectrograms. Furthermore, you can prepare another template. Note that default settings are basically rely on the librosa's ones.
+
+
+<div align="center">
+<img src="images/fixed_basis_spectrogram.png" alt="" title="", width="400">
+</div>
+
+
+## NMF
+First, please prepare the spectrogram whose type is ndarray. Also, prepare the initial values of basis matrix, which is fixed through the overall irerations. Note that the number of frequency bins must be the same number between the spectrogram and the initial values.
+
+<br>
+
 
 <br>
 
@@ -54,7 +95,7 @@ Return:
 <br>
 
 ## Complex NMF
-As the case of NMF, please prepare the spectrigram with ndarray. At the same time, make the initial values as fixed matrix. Then the activation matrix is initialized using the same way as NMF while phase matrix is initialized as follows. It is based on the original paper of complex NMF[1].
+As the case of NMF, please prepare the spectrigram with ndarray. At the same time, make the initial values as fixed matrix. Then the activation matrix is initialized using the same way as NMF while phase matrix is initialized as follows. It is based on the original paper of complex NMF[2].
 
 <br>
 
@@ -92,4 +133,5 @@ Return:
 <br>
 
 # References
-[1] Kameoka, Hirokazu, et al. "Complex NMF: A new sparse representation for acoustic signals." 2009 IEEE International Conference on Acoustics, Speech and Signal Processing. IEEE, 2009.
+[1] 
+[2] Kameoka, Hirokazu, et al. "Complex NMF: A new sparse representation for acoustic signals." 2009 IEEE International Conference on Acoustics, Speech and Signal Processing. IEEE, 2009.
