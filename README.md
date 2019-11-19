@@ -1,6 +1,6 @@
 # Complex_NMF
 <div align="center">
-<img src="images/CNMF.png" alt="" title="", width="400">
+<img src="images/CNMF.png" alt="" title="", width="600">
 </div>
 
 <br>
