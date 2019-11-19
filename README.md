@@ -25,7 +25,7 @@ In order to conduct source separation, basis supectrogram should be prepared. In
 <br>
 
 ```
-$ python python make_init_H.py [path_to_template_directory]
+$ python make_init.py [path_to_template_directory]
 ```
 
 <br>
@@ -50,7 +50,7 @@ In this algorithm, I adopt the parameters based on the harmonic feature of piano
 <br>
 
 <div align="center">
-<img src="images/set_parameters.png" alt="" title="", width="350">
+<img src="images/set_parameters.png" alt="" title="", width="360">
 </div>
 
 <br>
