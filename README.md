@@ -1,4 +1,10 @@
 # Complex_NMF
+<div align="center">
+<img src="images/CNMF.png" alt="" title="", width="400">
+</div>
+
+<br>
+
 This repository is for using NMF and complex NMF. Comments in the codes are written in Japanese.
 
 <br>
@@ -48,12 +54,6 @@ Return:
 <br>
 
 ## Complex NMF
-<div align="center">
-<img src="images/CNMF.png" alt="" title="", width="400">
-</div>
-
-<br>
-
 As the case of NMF, please prepare the spectrigram with ndarray. At the same time, make the initial values as fixed matrix. Then the activation matrix is initialized using the same way as NMF while phase matrix is initialized as follows. It is based on the original paper of complex NMF[1].
 
 <br>
