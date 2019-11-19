@@ -22,9 +22,14 @@ In this context, the basis matrix is considered to be fixed. Therefore, please g
 ## Making initialized basis spevtrogram
 In order to conduct source separation, basis supectrogram should be prepared. In this case, I made simple basis spectrogram from piano sound templates. These samplate is sampled from Musescore, one of the most popular notation software. In this repository named "basis_wav_piano" includes 5 octaves of single piano sound. Then using the code below, you can make fixed basis spectrograms which is made through NMF.
 
+<br>
+
 ```
 $ python python make_init_H.py [path_to_template_directory]
 ```
+
+<br>
+
 Arguments:  
 1. Path to the directory which includes template wav files.
 
