@@ -10,17 +10,17 @@ This repository is for using NMF and complex NMF. Comments in the codes are writ
 <br>
 
 # Description
-Main contents are devided into two types.
-1. NMF: just decomposing non negative spectrogram into basis and activation.
+The main contents are divided into two types.
+1. NMF: just decomposing non-negative spectrogram into basis and activation.
 2. CNMF: decomposing complex spectrogram with using phase values.
 
-In this context, the basis matrix is considered to be fixed. Therefore, please give them initial basis matrix as a fixed matrix. Note that the activation is initialized by gaussian distribution.
+In this context, the basis matrix is considered to be fixed. Therefore, please give them an initial basis matrix as a fixed matrix. Note that the activation is initialized by Gaussian distribution.
 
 <br>
 
 # Usage
-## Making initialized basis spevtrogram
-In order to conduct source separation, basis supectrogram should be prepared. In this case, I made simple basis spectrogram from piano sound templates. These samplate is sampled from Musescore, one of the most popular notation software. In this repository named "basis_wav_piano" includes 5 octaves of single piano sound. Then using the code below, you can make fixed basis spectrograms which is made through NMF.
+## Making initialized basis spectrogram
+In order to conduct source separation, a basis supectrogram should be prepared. In this case, I made a simple basis spectrogram from piano sound templates. These templates are sampled from Musescore, one of the most popular notation software. In this repository named "basis_wav_piano" includes 5 octaves of single piano sound. Then using the code below, you can make fixed basis spectrograms which are made through NMF.
 
 <br>
 
@@ -39,7 +39,7 @@ Return:
 
 <br>
 
-In this algorithm, I adopt the parameters based on the harmonic feature of piano as follows. 130.81 is the frequency of C3. Also, the damping coefficient is set as 0.9, variance as 1.0 and the number of peak as 50.
+In this algorithm, I adopt the parameters based on the harmonic feature of the piano as follows. 130.81 is the frequency of C3. Also, the damping coefficient is set as 0.9, variance as 1.0 and the number of the Gaussian peak as 50.
 
 <br>
 
@@ -61,7 +61,7 @@ In this algorithm, I adopt the parameters based on the harmonic feature of piano
 
 <br>
 
-Those parameters determin the initial values of NMF to make basis spectrograms. Furthermore, you can prepare another template. Note that default settings are basically rely on the librosa's ones.
+Those parameters determine the initial values of NMF to make basis spectrograms. Furthermore, you can prepare another template. Note that default settings basically rely on the librosa's ones.
 
 <br>
 
@@ -71,7 +71,7 @@ Those parameters determin the initial values of NMF to make basis spectrograms. 
 
 
 ## NMF
-First, please prepare the spectrogram whose type is ndarray. Also, prepare the initial values of basis matrix, which is fixed through the overall irerations. Note that the number of frequency bins must be the same number between the spectrogram and the initial values.
+First, please prepare the spectrogram whose type is ndarray. Also, prepare the initial values of the basis matrix, which is fixed through the overall iterations. Note that the number of frequency bins must be the same number between the spectrogram and the initial values.
 
 <br>
 
@@ -102,7 +102,7 @@ Return:
 <br>
 
 ## Complex NMF
-As the case of NMF, please prepare the spectrigram with ndarray. At the same time, make the initial values as fixed matrix. Then the activation matrix is initialized using the same way as NMF while phase matrix is initialized as follows. It is based on the original paper of complex NMF[2].
+As the case of NMF, please prepare the spectrogram with ndarray. At the same time, make the initial values as a fixed matrix. Then the activation matrix is initialized using the same way as NMF while the phase matrix is initialized as follows. It is based on the original paper of complex NMF[2].
 
 <br>
 
@@ -121,8 +121,8 @@ $ python CNMF.py [path_to_spectrogram.npy] [iterations] [path_to_initial_values]
 Arguments:  
 1. Path to the spectrogram file made by ndarray.
 2. The number of overall iterations.
-3. Path to the initial values of basis matrix
-4. Threshold of the error (optional)
+3. Path to the initial values of the basis matrix
+4. A threshold of the error (optional)
 
 
 Return:
