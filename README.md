@@ -1,6 +1,7 @@
 # Complex_NMF
 This repository is for using NMF and complex NMF. Comments in the codes are written in Japanese.
 
+<br>
 
 # Description
 Main contents are devided into two types.
@@ -9,20 +10,25 @@ Main contents are devided into two types.
 
 In this context, the basis matrix is considered to be fixed. Therefore, please give them initial basis matrix as a fixed matrix. Note that the activation is initialized by gaussian distribution.
 
+<br>
+
 # Usage
 ## NMF
 First, please prepare the spectrogram whose type is ndarray. Also, prepare the initial values of basis matrix, which is fixed through the overall irerations. Note that the number of frequency bins must be the same number between the spectrogram and the initial values.
 
+<br>
 
 <div align="center">
 <img src="images/GMM.png" alt="" title="", width="400">
 </div>
 
+<br>
 
 ```
 $ python NMF.py [path_to_spectrogram.npy] [iterations] [path_to_initial_values]
 ```
 
+<br>
 
 Arguments:  
 1. Path to the spectrogram file made by ndarray.
@@ -39,17 +45,30 @@ Return:
 <img src="images/learning_curve_NMF.png" alt="" title="", width="400">
 </div>
 
+<br>
+
 ## Complex NMF
-As the case of NMF, please prepare the spectrigram with ndarray. At the same time, make the initial values as fixed matrix. Then the activation matrix is initialized using the same way as NMF while phase matrix is initialized as follows. It is based on the original paper of complex NMF[1].
 <div align="center">
-<img src="images/init_phases.png" alt="" title="", width="300">
+<img src="images/CNMF.png" alt="" title="", width="400">
 </div>
 
+<br>
+
+As the case of NMF, please prepare the spectrigram with ndarray. At the same time, make the initial values as fixed matrix. Then the activation matrix is initialized using the same way as NMF while phase matrix is initialized as follows. It is based on the original paper of complex NMF[1].
+
+<br>
+
+<div align="center">
+<img src="images/init_phases.png" alt="" title="", width="300">
+</div>  
+
+<br>
 
 ```
 $ python CNMF.py [path_to_spectrogram.npy] [iterations] [path_to_initial_values] -thr [threshold]
 ```
 
+<br>
 
 Arguments:  
 1. Path to the spectrogram file made by ndarray.
@@ -69,6 +88,8 @@ Return:
 <div align="center">
 <img src="images/learning_curve_CNMF.png" alt="" title="", width="400">
 </div>
+
+<br>
 
 # References
 [1] Kameoka, Hirokazu, et al. "Complex NMF: A new sparse representation for acoustic signals." 2009 IEEE International Conference on Acoustics, Speech and Signal Processing. IEEE, 2009.
