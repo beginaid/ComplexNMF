@@ -11,6 +11,7 @@ In this context, the basis matrix is considered to be fixed. Therefore, please g
 
 # Usage
 ## NMF
+insert gif \\
 First, please prepare the spectrogram whose type is ndarray. Also, prepare the initial values of basis matrix, which is fixed through the overall irerations. Note that the number of frequency bins must be the same number between the spectrogram and the initial values.
 
 
