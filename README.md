@@ -41,6 +41,9 @@ In this algorithm, I adopt the parameters based on the harmonic feature of piano
 <div align="center">
 <img src="images/GMM_math.png" alt="" title="", width="400">
 </div>
+<div align="center">
+<img src="images/parameters.png" alt="" title="", width="280">
+</div>
 
 <br>
 
@@ -50,13 +53,9 @@ In this algorithm, I adopt the parameters based on the harmonic feature of piano
 
 <br>
 
-<div align="center">
-<img src="images/parameters.png" alt="" title="", width="280">
-</div>
-
-
 Those parameters determin the initial values of NMF to make basis spectrograms. Furthermore, you can prepare another template. Note that default settings are basically rely on the librosa's ones.
 
+<br>
 
 <div align="center">
 <img src="images/fixed_basis_spectrogram.png" alt="" title="", width="400">
@@ -133,5 +132,4 @@ Return:
 <br>
 
 # References
-[1] 
-[2] Kameoka, Hirokazu, et al. "Complex NMF: A new sparse representation for acoustic signals." 2009 IEEE International Conference on Acoustics, Speech and Signal Processing. IEEE, 2009.
+[1] Kameoka, Hirokazu, et al. "Complex NMF: A new sparse representation for acoustic signals." 2009 IEEE International Conference on Acoustics, Speech and Signal Processing. IEEE, 2009.
