@@ -50,7 +50,7 @@ In this algorithm, I adopt the parameters based on the harmonic feature of piano
 <br>
 
 <div align="center">
-<img src="images/parameters.png" alt="" title="", width="280">
+<img src="images/set_parameters.png" alt="" title="", width="350">
 </div>
 
 <br>
