@@ -46,6 +46,9 @@ In this algorithm, I adopt the parameters based on the harmonic feature of piano
 <div align="center">
 <img src="images/GMM_math.png" alt="" title="", width="400">
 </div>
+
+<br>
+
 <div align="center">
 <img src="images/parameters.png" alt="" title="", width="280">
 </div>
