@@ -20,7 +20,7 @@ In this context, the basis matrix is considered to be fixed. Therefore, please g
 
 # Usage
 ## Making initialized basis spectrogram
-In order to conduct source separation, a basis supectrogram should be prepared. In this case, you have to prepare wav files in advance which is used for making basis spectrogram. In this repository, we prepare some samples of the wav files. These templates are sampled from Musescore, one of the most popular notation software. In this repository named "basis_wav_piano" includes 3 octaves of single piano sound. Then using the code below, you can make fixed basis spectrograms which are made through NMF.
+In order to conduct source separation, a basis supectrogram should be prepared. You have to prepare wav files in advance which are used for making a basis spectrogram. In this repository, we prepare some samples of the wav files. These templates are sampled from Musescore, one of the most popular notation software. In this repository named "basis_wav_piano" includes 3 octaves of single piano sound. Then using the code below, you can make fixed basis spectrograms which are made through NMF (They include noise, and we strongly recommend that you should prepare them by yourself).
 
 <br>
 
